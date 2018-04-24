@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">		
+	<title>H5STREAM VIDEO</title>
+	<script src="js/jquery-3.1.1.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/h5splayer.js"></script>
+	<script src="js/h5splayerhelper.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/h5splayer.css" />
+
+</head>
+
+<body onLoad="onLoad()">
+	<div class="content">
+		<header>
+			<h2>
+				<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>监控云</h2>
+			<div class="right">
+				<span>云监控服务平台</span>
+				<span>
+					<a href="javascript:void(0)">登陆</a>
+				</span>
+				<span>
+					<a href="javascript:void(0)">注册</a>
+				</span>
+			</div>
+		</header>
+
+		<aside>
+			<dl>
+				<dt>
+					<a href="javascript:void(0)">
+						<i class="glyphicon glyphicon-facetime-video"></i>
+						<span>
+							监控设备
+						</span>
+					</a>
+				</dt>
+				<dt>
+					<a href="">
+						<i class="glyphicon glyphicon-cloud"></i>
+						<span>云服务台</span>
+					</a>
+				</dt>
+				<!--<dd>
+					<dl>
+						<dt>1</dt>
+						<dt>2</dt>
+						<dt>3</dt>
+					</dl>
+				</dd> -->
+				<dt>
+					<a href="">
+						<i class="glyphicon glyphicon-wrench"></i>
+						<span>
+							用户管理
+						</span>
+					</a>
+				</dt>
+				<dt>
+					<a href="">
+						<i class="glyphicon glyphicon-cog"></i>
+						<span>
+							用户设置
+						</span>
+					</a>
+				</dt>
+			</dl>
+		</aside>
+		<!-- 右侧 -->
+		<div class="box">
+			<div class="h5videodiv">
+				<video class="h5video" id="h5sVideo1" autoplay webkit-playsinline playsinline>
+
+				</video>
+				<div class="playpause" id="playpause1"></div>
+				<i class="glyphicon glyphicon-fullscreen" id="fullscreen"></i>
+			</div>
+
+			<div class="h5videodiv">
+				<video class="h5video" id="h5sVideo2" autoplay>
+
+				</video>
+				<div class="playpause" id="playpause2"></div>
+				<i class="glyphicon glyphicon-fullscreen" id="fullscreen"></i>
+
+			</div>
+
+			<div class="h5videodiv">
+				<video class="h5video" id="h5sVideo3" autoplay>
+
+				</video>
+				<div class="playpause"></div>
+				<i class="glyphicon glyphicon-fullscreen" id="fullscreen"></i>
+
+			</div>
+
+			<div class="h5videodiv">
+				<video class="h5video" id="h5sVideo4" autoplay>
+
+				</video>
+				<div class="playpause"></div>
+				<i class="glyphicon glyphicon-fullscreen" id="fullscreen"></i>
+
+			</div>
+		</div>
+		<div class="ContentControl">
+			<div class="title">云台控制</div>
+			<div class="control">
+				<div class="radio">
+					<div id="up"></div>
+					<div id="left"></div>
+					<div id="middle">
+						<div id="center"></div>
+					</div>
+					<div id="down"></div>
+					<div id="rights"></div>
+				</div>
+				<div class="change_size">
+					<div class="magnify">放大</div>
+					<div class="reduce">缩小</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</body>
+
+<script>
+	//document.domain="";
+	var conf1 = {
+		videoid: 'h5sVideo1',
+		protocol: "http:", //http: or https:
+		host: "localhost:8080", //localhost:8080
+		rootpath: "/", // '/'
+		token: 'token1',
+		hlsver: 'v1', //v1 is for ts, v2 is for fmp4
+		session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+	};
+	var conf2 = {
+		videoid: 'h5sVideo2',
+		protocol: window.location.protocol, //http: or https:
+		host: window.location.host, //localhost:8080
+		rootpath: window.location.pathname, // '/'
+		token: 'token1',
+		hlsver: 'v1', //v1 is for ts, v2 is for fmp4
+		session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+	};
+	var conf3 = {
+		videoid: 'h5sVideo3',
+		protocol: "http:", //http: or https:
+		host: "localhost:8080", //localhost:8080
+		rootpath: "/", // '/'
+		token: 'token2',
+		hlsver: 'v1', //v1 is for ts, v2 is for fmp4
+		session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+	};
+	var conf4 = {
+		videoid: 'h5sVideo4',
+		protocol: window.location.protocol, //http: or https:
+		host: window.location.host, //localhost:8080
+		rootpath: window.location.pathname, // '/'
+		token: 'token2',
+		hlsver: 'v1', //v1 is for ts, v2 is for fmp4
+		session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+	};
+	var v1 = H5sPlayerCreate(conf1);
+	var v2 = H5sPlayerCreate(conf2);
+	var v3 = H5sPlayerCreate(conf3);
+	var v4 = H5sPlayerCreate(conf4);
+
+	function onLoad() {
+		//document.domain="";
+	}
+
+	$('#h5sVideo1').parent().click(function () {
+		if ($(this).children(".h5video").get(0).paused) {
+			$(this).children(".h5video").get(0).play();
+			if (v1 != null) {
+				v1.disconnect();
+				H5sPlayerDelete(v1);
+				v1 = null;
+			}
+
+			v1 = H5sPlayerCreate(conf1);
+
+			console.log(v1);
+			v1.connect();
+
+			$(this).children(".playpause").fadeOut();
+		} else {
+			v1.disconnect();
+			H5sPlayerDelete(v1);
+			v1 = null;
+			$(this).children(".h5video").get(0).pause();
+			$(this).children(".playpause").fadeIn();
+		}
+	});
+
+	// 全屏
+	$('#fullscreen').click(function () {
+		allscreen();
+	});
+
+	function allscreen() {
+		var video = $('.h5video')[0];
+		if (video.requestFullscreen) {
+			video.requestFullscreen();
+		} else if (video.mozRequestFullScreen) {
+			video.mozRequestFullScreen();
+		} else if (video.webkitRequestFullScreen) {
+			video.webkitRequestFullScreen();
+		}
+	}
+
+	$('#h5sVideo2').parent().click(function () {
+		if ($(this).children(".h5video").get(0).paused) {
+			$(this).children(".h5video").get(0).play();
+			if (v2 != null) {
+				v2.disconnect();
+				H5sPlayerDelete(v2);
+				v2 = null;
+			}
+
+			v2 = H5sPlayerCreate(conf2);
+
+			console.log(v2);
+			v2.connect();
+			$(this).children(".playpause").fadeOut();
+		} else {
+			v2.disconnect();
+			H5sPlayerDelete(v2);
+			v2 = null;
+			$(this).children(".h5video").get(0).pause();
+			$(this).children(".playpause").fadeIn();
+		}
+	});
+
+	$('#h5sVideo3').parent().click(function () {
+		if ($(this).children(".h5video").get(0).paused) {
+			$(this).children(".h5video").get(0).play();
+			if (v3 != null) {
+				v3.disconnect();
+				H5sPlayerDelete(v3);
+				v3 = null;
+			}
+
+			v3 = H5sPlayerCreate(conf3);
+
+			console.log(v3);
+			v3.connect();
+
+			$(this).children(".playpause").fadeOut();
+		} else {
+			v3.disconnect();
+			H5sPlayerDelete(v3);
+			v3 = null;
+			$(this).children(".h5video").get(0).pause();
+			$(this).children(".playpause").fadeIn();
+		}
+	});
+
+	$('#h5sVideo4').parent().click(function () {
+		if ($(this).children(".h5video").get(0).paused) {
+			$(this).children(".h5video").get(0).play();
+			if (v4 != null) {
+				v4.disconnect();
+				H5sPlayerDelete(v4);
+				v4 = null;
+			}
+
+			v4 = H5sPlayerCreate(conf4);
+
+			console.log(v4);
+			v4.connect();
+			$(this).children(".playpause").fadeOut();
+		} else {
+			v4.disconnect();
+			H5sPlayerDelete(v4);
+			v4 = null;
+			$(this).children(".h5video").get(0).pause();
+			$(this).children(".playpause").fadeIn();
+		}
+	});
+</script>
+
+</html>
